@@ -35,30 +35,25 @@ namespace Exam.UserManager.Service
             {
                 UserModel user = _mapper.Map<UserModel>(userDto);
 
-                //***
-                //TODO Item 2: Implement the logic to update user
-                bool result = false; //result of update from user repository
-                //***
+               
+                bool result = _userRepository.Update(user);
 
                 return result;
             }
             throw new ArgumentException("Permission not allowed!");
-        }
+        }   
 
         public bool Delete(string id)
         {
             if (_userPermission.CanWrite())
             {
-                //***
-                //TODO Item 3: Implement the logic to delete user
-                // Update isActive to false, instead of deleting the user
                 UserModel user = _userRepository.Get(id);
-                //what if user is not existing?
+                if (user == null)
+                {
+                    throw new ArgumentException("User not found!");
+                }
                 user.IsActive = false;
-
-                bool result = false; //result of update from user repository
-                //***
-
+                bool result = _userRepository.Update(user);
                 return result;
             }
             throw new ArgumentException("Permission not allowed!");

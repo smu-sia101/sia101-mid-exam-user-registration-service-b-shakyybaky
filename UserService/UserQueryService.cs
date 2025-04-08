@@ -40,19 +40,16 @@ namespace Exam.UserManager.Service
         {
             if (_userPermission.CanRead())
             {
-                //***
-                //TODO: Item 1: Implement the logic to get all users
-                IEnumerable<UserModel> user = null;
-                //***
+                IEnumerable<UserModel> user = _userRepository.Get();
 
                 if (user == null || !user.Any())
                 {
                     return Enumerable.Empty<UserDTO>();
                 }
 
-                IEnumerable<UserDTO> userDto = _mapper.Map<IEnumerable<UserDTO>>(user);
+                IEnumerable<UserDTO> userDtos = _mapper.Map<IEnumerable<UserDTO>>(user);
 
-                return userDto;
+                return userDtos;
             }
 
             throw new ArgumentException("Permission not allowed!");
